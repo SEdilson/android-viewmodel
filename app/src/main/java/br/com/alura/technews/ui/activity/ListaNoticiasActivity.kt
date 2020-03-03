@@ -2,10 +2,9 @@ package br.com.alura.technews.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import br.com.alura.technews.R
@@ -64,13 +63,14 @@ class ListaNoticiasActivity : AppCompatActivity() {
     }
 
     private fun buscaNoticias() {
-        viewModel.buscaTodos(
-            quandoSucesso = {
-                adapter.atualiza(it)
-            }, quandoFalha = {
+        viewModel.buscaTodos().observe(this, Observer {resource ->
+            resource.dado?.let {noticias ->
+                adapter.atualiza(noticias)
+            }
+            resource.erro?.let {
                 mostraErro(MENSAGEM_FALHA_CARREGAR_NOTICIAS)
             }
-        )
+        })
     }
 
     private fun abreFormularioModoCriacao() {
