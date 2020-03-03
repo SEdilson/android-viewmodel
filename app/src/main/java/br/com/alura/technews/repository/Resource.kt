@@ -11,9 +11,8 @@ fun <T> criaResourceDeFalha(
     resourceAtual: Resource<T?>?,
     erro: String?
 ): Resource<T?> {
-    return if (resourceAtual != null) {
-        Resource(dado = resourceAtual.dado, erro = erro)
-    } else {
-        Resource(dado = null, erro = erro)
+    if (resourceAtual != null) {
+        return Resource(dado = resourceAtual.dado, erro = erro)
     }
+    return Resource(dado = null, erro = erro)
 }
